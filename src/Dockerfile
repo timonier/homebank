@@ -8,7 +8,7 @@ ENV \
 RUN set -x \
     && BUILD_DEPS="build-essential curl libgtk-3-dev libofx-dev intltool" \
     && apt-get update \
-    && apt-get install -y --no-install-recommends $BUILD_DEPS libofx4 light-themes \
+    && apt-get install -y --no-install-recommends $BUILD_DEPS libofx4 \
     && curl -sLo /homebank-$HOMEBANK_VERSION.tar.gz http://homebank.free.fr/public/homebank-$HOMEBANK_VERSION.tar.gz \
     && tar -zxpf homebank-$HOMEBANK_VERSION.tar.gz \
     && cd homebank-$HOMEBANK_VERSION \
