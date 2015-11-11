@@ -1,0 +1,9 @@
+#!/bin/bash
+set -e
+cd "`dirname "$0"`/../src"
+
+IMAGE=${IMAGE:-mauchede/homebank}
+TAG=${TAG:-5.0.5}
+
+#docker rmi $IMAGE:$TAG || :
+docker build -t $IMAGE:$TAG .
