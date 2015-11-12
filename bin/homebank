@@ -16,6 +16,5 @@ docker run \
     -v /tmp:/tmp \
     -v /usr/lib:/usr/lib:ro \
     -v /usr/share:/usr/share:ro \
-    -v /usr/share/themes:/usr/share/themes:ro \
     -v $HOME:$HOME \
     -ti $IMAGE:$TAG "$@"
