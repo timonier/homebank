@@ -3,7 +3,7 @@
 Copy the file `bin/home` into your executable folder (like `/usr/local/bin` or `$HOME/bin`):
 
 ```bash
-sudo curl -sLo /usr/local/bin/homebank https://github.com/mauchede/homebank/raw/bin/homebank
+sudo curl -sLo /usr/local/bin/homebank https://github.com/mauchede/homebank/raw/master/bin/homebank
 sudo chmod +x /usr/local/bin/homebank
 ```
 
