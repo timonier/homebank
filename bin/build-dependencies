@@ -1,0 +1,16 @@
+#!/bin/bash
+set -e
+cd "`dirname "$0"`/../src"
+
+IMAGE=${IMAGE:-ubuntu}
+TAG=${TAG:-14.04}
+
+LIBOFX_VERSION=${LIBOFX_VERSION:-0.9.4}
+
+docker run -i --rm -e UID=$(id -u) -e GID=$(id -g) -e LIBOFX_VERSION=$LIBOFX_VERSION -v $PWD:/dist $IMAGE:$TAG bash <<"EOF"
+    set -x \
+    && apt-get update \
+    && apt-get install -y --no-install-recommends libofx4=1:$LIBOFX_VERSION* \
+    && cp /usr/lib/x86_64-linux-gnu/libofx.so.4.0.2 /dist/libofx.so.4.0.2 \
+    && chown $UID:$GID /dist/libofx.so.4.0.2
+EOF

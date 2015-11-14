@@ -1,9 +1,11 @@
 #!/bin/bash
 set -e
-cd "`dirname "$0"`/../src"
+cd "`dirname "$0"`/.."
 
 IMAGE=${IMAGE:-mauchede/homebank}
 TAG=${TAG:-5.0.5}
 
+bin/build-dependencies
+
 docker rmi $IMAGE:$TAG || :
-docker build -t $IMAGE:$TAG .
+docker build -t $IMAGE:$TAG src/.

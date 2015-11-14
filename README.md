@@ -7,7 +7,7 @@ sudo curl -sLo /usr/local/bin/homebank https://github.com/mauchede/homebank/raw/
 sudo chmod +x /usr/local/bin/homebank
 ```
 
-## Usage
+### Usage
 
 Run the command `homebank`:
 
