@@ -5,10 +5,8 @@ ENV \
     DEBIAN_FRONTEND=noninteractive \
     HOMEBANK_VERSION=5.0.5
 
-COPY libofx.so.4.0.2 /lib/x86_64-linux-gnu/libofx.so.4
-
 RUN set -x \
-    && BUILD_DEPS="build-essential curl libgtk-3-dev libofx-dev intltool" \
+    && BUILD_DEPS="build-essential curl libgtk-3-dev libofx4 libofx-dev intltool" \
     && apt-get update \
     && apt-get install -y --no-install-recommends $BUILD_DEPS \
     && curl -sLo /homebank-$HOMEBANK_VERSION.tar.gz http://homebank.free.fr/public/homebank-$HOMEBANK_VERSION.tar.gz \
@@ -17,8 +15,9 @@ RUN set -x \
     && ./configure --prefix=/usr \
     && make \
     && make install \
-    && apt-get -y --purge remove $BUILD_DEPS \
-    && apt-get -y  --purge autoremove \
+    && cp /usr/lib/x86_64-linux-gnu/libofx.so.4.0.2 /lib/x86_64-linux-gnu/libofx.so.4.0.2 \
+    && apt-get remove -y --purge $BUILD_DEPS \
+    && apt-get autoremove -y  --purge \
     && rm -rf /homebank-$HOMEBANK_VERSION /var/lib/apt/lists/*
 
 COPY entrypoint.sh /entrypoint.sh
