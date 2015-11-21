@@ -6,7 +6,7 @@ ENV \
     HOMEBANK_VERSION=5.0.5
 
 RUN set -x \
-    && BUILD_DEPS="build-essential curl libgtk-3-dev libofx4 libofx-dev intltool" \
+    && BUILD_DEPS="build-essential curl libgtk-3-dev libofx4 libofx-dev libosp5 intltool" \
     && apt-get update \
     && apt-get install -y --no-install-recommends $BUILD_DEPS \
     && curl -sLo /homebank-$HOMEBANK_VERSION.tar.gz http://homebank.free.fr/public/homebank-$HOMEBANK_VERSION.tar.gz \
@@ -16,6 +16,7 @@ RUN set -x \
     && make \
     && make install \
     && cp /usr/lib/x86_64-linux-gnu/libofx.so.4.0.2 /lib/x86_64-linux-gnu/libofx.so.4.0.2 \
+    && cp /usr/lib/libosp.so.5.0.0 /lib/libosp.so.5.0.0 \
     && apt-get remove -y --purge $BUILD_DEPS \
     && apt-get autoremove -y  --purge \
     && rm -rf /homebank-$HOMEBANK_VERSION /var/lib/apt/lists/*
