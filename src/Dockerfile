@@ -6,20 +6,11 @@ ENV \
     HOMEBANK_VERSION=5.0.5
 
 RUN set -x \
-    && BUILD_DEPS="build-essential curl libgtk-3-dev libofx4 libofx-dev libosp5 intltool" \
+    && echo "deb http://ppa.launchpad.net/mdoyen/homebank/ubuntu trusty main" >> /etc/apt/sources.list.d/homebank.list \
+    && apt-key adv --keyserver keyserver.ubuntu.com --recv-keys ECA9D5AF2B98B3A0 \
     && apt-get update \
-    && apt-get install -y --no-install-recommends $BUILD_DEPS \
-    && curl -sLo /homebank-$HOMEBANK_VERSION.tar.gz http://homebank.free.fr/public/homebank-$HOMEBANK_VERSION.tar.gz \
-    && tar -zxpf homebank-$HOMEBANK_VERSION.tar.gz \
-    && cd homebank-$HOMEBANK_VERSION \
-    && ./configure --prefix=/usr \
-    && make \
-    && make install \
-    && cp /usr/lib/x86_64-linux-gnu/libofx.so.4.0.2 /lib/x86_64-linux-gnu/libofx.so.4.0.2 \
-    && cp /usr/lib/libosp.so.5.0.0 /lib/libosp.so.5.0.0 \
-    && apt-get remove -y --purge $BUILD_DEPS \
-    && apt-get autoremove -y  --purge \
-    && rm -rf /homebank-$HOMEBANK_VERSION /var/lib/apt/lists/*
+    && apt-get install -y homebank=$HOMEBANK_VERSION* \
+    && rm -rf /var/lib/apt/lists/*
 
 COPY entrypoint.sh /entrypoint.sh
 

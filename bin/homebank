@@ -15,9 +15,8 @@ docker run \
     -v /etc/localtime:/etc/localtime:ro \
     -v /run:/run \
     -v /tmp:/tmp \
-    -v /usr/lib:/usr/lib:ro \
-    -v /usr/share:/usr/local/share:ro \
     -v /usr/share/gvfs:/usr/share/gvfs:ro \
+    -v /usr/share/icons:/usr/share/icons:ro \
     -v /usr/share/themes:/usr/share/themes:ro \
     -v /var/lib/dbus:/var/lib/dbus:ro \
     -v $HOME:$HOME \
