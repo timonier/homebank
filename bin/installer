@@ -1,0 +1,43 @@
+#!/bin/bash
+set -e
+
+fail() {
+    echo $1 1>&2
+    echo "Usage: $0 [install|uninstall]" 1>&2
+    exit 1
+}
+
+install() {
+    IMAGE=${IMAGE:-mauchede/homebank}
+    TAG=${TAG:-5.0.5}
+    docker run --rm --entrypoint=/bin/bash -v /:/host $IMAGE:$TAG -c "cp $1 /host/$1"
+}
+
+uninstall() {
+    rm -rf $1
+}
+
+[[ $# -lt 1 ]] && fail "Invalid number of arguments"
+[[ $EUID != 0 ]] && fail "Impossible to prepare the system without root privileges."
+[[ $(lsb_release -si) != Ubuntu ]] && fail "Impossible to prepare another operating system than Ubuntu."
+
+case $1 in
+    install )
+        curl -sLo /usr/local/bin/homebank https://github.com/mauchede/homebank/raw/master/bin/homebank
+        chmod +x /usr/local/bin/homebank
+
+        install /usr/share/applications/homebank.desktop
+        install /usr/share/menu/homebank
+        install /usr/share/pixmaps/homebank.xpm
+    ;;
+
+    uninstall )
+        uninstall /usr/bin/homebank
+        uninstall /usr/share/applications/homebank.desktop
+        uninstall /usr/share/menu/homebank
+        uninstall /usr/share/pixmaps/homebank.xpm
+    ;;
+
+    * )
+        fail "Argument $1 is invalid."
+esac

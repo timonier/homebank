@@ -17,6 +17,7 @@ docker run \
     -v /tmp:/tmp \
     -v /usr/share/gvfs:/usr/share/gvfs:ro \
     -v /usr/share/icons:/usr/share/icons:ro \
+    -v /usr/share/fonts:/usr/share/fonts:ro \
     -v /usr/share/themes:/usr/share/themes:ro \
     -v /var/lib/dbus:/var/lib/dbus:ro \
     -v $HOME:$HOME \

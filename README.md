@@ -1,10 +1,16 @@
 ### Installation
 
-Copy the file `bin/home` into your executable folder (like `/usr/local/bin` or `$HOME/bin`):
+Copy the file `bin/homebank` into your executable folder (like `/usr/local/bin` or `$HOME/bin`):
 
 ```bash
 sudo curl -sLo /usr/local/bin/homebank https://github.com/mauchede/homebank/raw/master/bin/homebank
 sudo chmod +x /usr/local/bin/homebank
+```
+
+Ubuntu users can use the [installer](https://github.com/mauchede/homebank/blob/master/bin/installer):
+
+```bash
+curl -sSL https://github.com/mauchede/homebank/raw/master/bin/installer | sudo bash -s install
 ```
 
 ### Usage
@@ -12,11 +18,18 @@ sudo chmod +x /usr/local/bin/homebank
 Run the command `homebank`:
 
 ```bash
+homebank
+# Start Homebank
+```
+
+__Note__: By default, the version `5.0.5` will be used. To change the version, define the `TAG` before the command. For example:
+
+```bash
 homebank --version
 # homebank 5.0.5
 
-homebank
-# Start Homebank
+TAG="..." homebank
+# homebank ...
 ```
 
 ### Contributing

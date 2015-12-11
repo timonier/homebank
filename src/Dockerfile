@@ -12,6 +12,6 @@ RUN set -x \
     && apt-get install -y homebank=$HOMEBANK_VERSION* \
     && rm -rf /var/lib/apt/lists/*
 
-COPY entrypoint.sh /entrypoint.sh
+COPY ./root /
 
 ENTRYPOINT [ "/entrypoint.sh" ]
