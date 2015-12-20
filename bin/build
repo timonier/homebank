@@ -2,7 +2,7 @@
 set -e
 cd "`dirname "$0"`/.."
 
-IMAGE=${IMAGE:-mauchede/homebank}
+IMAGE=${IMAGE:-timonier/homebank}
 TAG=${TAG:-5.0.5}
 
 docker rmi $IMAGE:$TAG || :

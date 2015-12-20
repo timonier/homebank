@@ -8,7 +8,7 @@ fail() {
 }
 
 install() {
-    IMAGE=${IMAGE:-mauchede/homebank}
+    IMAGE=${IMAGE:-timonier/homebank}
     TAG=${TAG:-5.0.5}
     docker run --rm --entrypoint=/bin/bash -v /:/host $IMAGE:$TAG -c "cp $1 /host/$1"
 }
@@ -19,12 +19,12 @@ uninstall() {
 
 [[ $# -lt 1 ]] && fail "Invalid number of arguments"
 [[ $EUID != 0 ]] && fail "Impossible to prepare the system without root privileges."
-[[ $(lsb_release -si) != Ubuntu ]] && fail "Impossible to prepare another operating system than Ubuntu."
+[[ $(uname) != Linux ]] && fail "Impossible to prepare another operating system than Linux."
 
 case $1 in
     install )
-        curl -sLo /usr/local/bin/homebank https://github.com/mauchede/homebank/raw/master/bin/homebank
-        chmod +x /usr/local/bin/homebank
+        curl -sLo /usr/bin/homebank https://github.com/timonier/homebank/raw/master/bin/homebank
+        chmod +x /usr/bin/homebank
 
         install /usr/share/applications/homebank.desktop
         install /usr/share/menu/homebank
