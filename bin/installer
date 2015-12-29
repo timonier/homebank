@@ -1,5 +1,4 @@
 #!/bin/bash
-set -e
 
 fail() {
     echo $1 1>&2
@@ -13,18 +12,15 @@ install() {
     docker run --rm --entrypoint=/bin/bash -v /:/host $IMAGE:$TAG -c "cp $1 /host/$1"
 }
 
-uninstall() {
-    rm -rf $1
-}
-
 [[ $# -lt 1 ]] && fail "Invalid number of arguments"
 [[ $EUID != 0 ]] && fail "Impossible to prepare the system without root privileges."
 [[ $(uname) != Linux ]] && fail "Impossible to prepare another operating system than Linux."
 
 case $1 in
     install )
-        curl -sLo /usr/bin/homebank https://github.com/timonier/homebank/raw/master/bin/homebank
-        chmod +x /usr/bin/homebank
+        curl -sLo /usr/local/bin/homebank https://github.com/timonier/homebank/raw/master/bin/homebank
+        chmod +x /usr/local/bin/homebank
+        ln -fs /usr/local/bin/homebank /usr/bin/homebank
 
         install /usr/share/applications/homebank.desktop
         install /usr/share/menu/homebank
@@ -32,10 +28,11 @@ case $1 in
     ;;
 
     uninstall )
-        uninstall /usr/bin/homebank
-        uninstall /usr/share/applications/homebank.desktop
-        uninstall /usr/share/menu/homebank
-        uninstall /usr/share/pixmaps/homebank.xpm
+        rm /usr/bin/homebank
+        rm /usr/local/bin/homebank
+        rm /usr/share/applications/homebank.desktop
+        rm /usr/share/menu/homebank
+        rm /usr/share/pixmaps/homebank.xpm
     ;;
 
     * )
