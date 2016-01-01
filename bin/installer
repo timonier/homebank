@@ -9,7 +9,11 @@ fail() {
 install() {
     IMAGE=${IMAGE:-timonier/homebank}
     TAG=${TAG:-5.0.5}
-    docker run --rm --entrypoint=/bin/bash -v /:/host $IMAGE:$TAG -c "cp $1 /host/$1"
+
+    SOURCE=$1
+    DESTINATION=${2:-$1}
+
+    docker run --rm --entrypoint=/bin/bash -v /:/host $IMAGE:$TAG -c "cp $SOURCE /host/$DESTINATION"
 }
 
 [[ $# -lt 1 ]] && fail "Invalid number of arguments"
@@ -24,15 +28,15 @@ case $1 in
 
         install /usr/share/applications/homebank.desktop
         install /usr/share/menu/homebank
-        install /usr/share/pixmaps/homebank.xpm
+        install /usr/share/icons/hicolor/48x48/apps/homebank.png /usr/share/pixmaps/homebank.png
     ;;
 
     uninstall )
-        rm /usr/bin/homebank
-        rm /usr/local/bin/homebank
-        rm /usr/share/applications/homebank.desktop
-        rm /usr/share/menu/homebank
-        rm /usr/share/pixmaps/homebank.xpm
+        rm -f /usr/bin/homebank
+        rm -f /usr/local/bin/homebank
+        rm -f /usr/share/applications/homebank.desktop
+        rm -f /usr/share/menu/homebank
+        rm -f /usr/share/pixmaps/homebank.png
     ;;
 
     * )
