@@ -1,14 +1,13 @@
 #!/bin/bash
-set -e
 
-IMAGE=${IMAGE:-timonier/homebank}
-TAG=${TAG:-5.0.5}
+HOME=$(/usr/bin/getent passwd $USER | cut -d: -f6)
+PWD=$(/bin/pwd)
 
 docker run \
     $(env | cut -d= -f1 | awk '{print "-e", $1}') \
     -e NO_AT_BRIDGE=1 \
-    --net=host \
-    --rm \
+    -i \
+    -t=$([[ -t 0 ]] && echo "true" || echo "false") \
     -v /etc/fonts:/etc/fonts:ro \
     -v /etc/group:/etc/group:ro \
     -v /etc/passwd:/etc/passwd:ro \
@@ -20,5 +19,10 @@ docker run \
     -v /usr/share/fonts:/usr/share/fonts:ro \
     -v /usr/share/themes:/usr/share/themes:ro \
     -v /var/lib/dbus:/var/lib/dbus:ro \
-    -v $HOME:$HOME \
-    $IMAGE:$TAG "$@"
+    -v "$HOME:$HOME" \
+    -v "$PWD:$PWD" \
+    -w "$PWD" \
+    --net=host \
+    --privileged \
+    --rm \
+    ${IMAGE:-timonier/homebank}:${TAG:-5.0.5} /usr/bin/homebank "$@"

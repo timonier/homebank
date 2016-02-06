@@ -1,9 +1,4 @@
 #!/bin/bash
-set -e
-cd "`dirname "$0"`/.."
+cd "`dirname "$0"`/../src"
 
-IMAGE=${IMAGE:-timonier/homebank}
-TAG=${TAG:-5.0.5}
-
-docker rmi $IMAGE:$TAG || :
-docker build -t $IMAGE:$TAG src/.
+docker build -t ${IMAGE:-timonier/homebank}:${TAG:-5.0.5} .

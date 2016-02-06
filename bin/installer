@@ -1,4 +1,5 @@
 #!/bin/bash
+set -x
 
 fail() {
     echo $1 1>&2
@@ -7,13 +8,11 @@ fail() {
 }
 
 install() {
-    IMAGE=${IMAGE:-timonier/homebank}
-    TAG=${TAG:-5.0.5}
-
-    SOURCE=$1
-    DESTINATION=${2:-$1}
-
-    docker run --rm --entrypoint=/bin/bash -v /:/host $IMAGE:$TAG -c "cp $SOURCE /host/$DESTINATION"
+    docker run \
+        -v /:/host \
+        --entrypoint=/bin/bash \
+        --rm \
+        ${IMAGE:-timonier/homebank}:${TAG:-5.0.5} -c "cp $1 ${2:-$1}"
 }
 
 [[ $# -lt 1 ]] && fail "Invalid number of arguments"
@@ -22,9 +21,8 @@ install() {
 
 case $1 in
     install )
-        curl -sLo /usr/local/bin/homebank https://github.com/timonier/homebank/raw/master/bin/homebank
+        curl -sLo /usr/local/bin/homebank "https://github.com/timonier/homebank/raw/master/bin/homebank"
         chmod +x /usr/local/bin/homebank
-        ln -fs /usr/local/bin/homebank /usr/bin/homebank
 
         install /usr/share/applications/homebank.desktop
         install /usr/share/menu/homebank
@@ -32,7 +30,6 @@ case $1 in
     ;;
 
     uninstall )
-        rm -f /usr/bin/homebank
         rm -f /usr/local/bin/homebank
         rm -f /usr/share/applications/homebank.desktop
         rm -f /usr/share/menu/homebank
