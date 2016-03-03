@@ -4,8 +4,7 @@ MAINTAINER Morgan Auchede <morgan.auchede@gmail.com>
 ENV \
     DEBIAN_FRONTEND=noninteractive \
     HOMEBANK_VERSION=5.0.5 \
-    LIBCANBERRA_GTK3_MODULE=0.30 \
-    UNITY_GTK3_MODULE=0.0.0
+    NO_AT_BRIDGE=1
 
 RUN set -x \
 
@@ -19,14 +18,14 @@ RUN set -x \
 
     && apt-get install -y \
            homebank=$HOMEBANK_VERSION* \
-           libcanberra-gtk3-module=$LIBCANBERRA_GTK3_MODULE* \
-           unity-gtk3-module=$UNITY_GTK3_MODULE* \
+           libcanberra-gtk3-module \
+           unity-gtk3-module \
 
     # Clean
 
     && rm -rf \
            /var/lib/apt/lists/*
 
-COPY ./root /
+COPY ./rootfs /
 
 ENTRYPOINT [ "/entrypoint.sh" ]

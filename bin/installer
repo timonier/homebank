@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/bin/sh
 set -x
 
 fail() {
@@ -10,14 +10,14 @@ fail() {
 install() {
     docker run \
         -v /:/host \
-        --entrypoint=/bin/bash \
+        --entrypoint=/bin/sh \
         --rm \
         ${IMAGE:-timonier/homebank}:${TAG:-5.0.5} -c "cp $1 ${2:-$1}"
 }
 
-[[ $# -lt 1 ]] && fail "Invalid number of arguments"
-[[ $EUID != 0 ]] && fail "Impossible to prepare the system without root privileges."
-[[ $(uname) != Linux ]] && fail "Impossible to prepare another operating system than Linux."
+[ $# -lt 1 ] && fail "Invalid number of arguments"
+[ "$EUID" != 0 ] && fail "Impossible to prepare the system without root privileges."
+[ $(uname) != Linux ] && fail "Impossible to prepare another operating system than Linux."
 
 case $1 in
     install )

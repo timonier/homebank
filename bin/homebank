@@ -1,13 +1,12 @@
-#!/bin/bash
+#!/bin/sh
 
 HOME=$(/usr/bin/getent passwd $USER | cut -d: -f6)
 PWD=$(/bin/pwd)
 
 docker run \
     $(env | cut -d= -f1 | awk '{print "-e", $1}') \
-    -e NO_AT_BRIDGE=1 \
     -i \
-    -t=$([[ -t 0 ]] && echo "true" || echo "false") \
+    -t=$([ -t 0 ] && echo "true" || echo "false") \
     -v /etc/fonts:/etc/fonts:ro \
     -v /etc/group:/etc/group:ro \
     -v /etc/passwd:/etc/passwd:ro \
