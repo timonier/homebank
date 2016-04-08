@@ -21,7 +21,7 @@ docker run \
     -v "$HOME:$HOME" \
     -v "$PWD:$PWD" \
     -w "$PWD" \
-    --net=host \
+    --net host \
     --privileged \
     --rm \
     ${IMAGE:-timonier/homebank}:${TAG:-5.0.5} /usr/bin/homebank "$@"
