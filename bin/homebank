@@ -1,6 +1,7 @@
 #!/bin/sh
 
-HOME=$(/usr/bin/getent passwd $USER | cut -d: -f6)
+UID=$(/usr/bin/id -u)
+HOME=$(/usr/bin/getent passwd $UID | cut -d: -f6)
 PWD=$(/bin/pwd)
 
 docker run \
