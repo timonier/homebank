@@ -2,13 +2,14 @@ FROM ubuntu:14.04
 MAINTAINER Morgan Auchede <morgan.auchede@gmail.com>
 
 ENV \
-    DEBIAN_FRONTEND=noninteractive \
     HOMEBANK_VERSION=5.0.5 \
     NO_AT_BRIDGE=1
 
 RUN set -x \
 
     # Prepare system
+
+    && export DEBIAN_FRONTEND=noninteractive \
 
     && echo "deb http://ppa.launchpad.net/mdoyen/homebank/ubuntu trusty main" >> /etc/apt/sources.list.d/homebank.list \
     && apt-key adv --keyserver keyserver.ubuntu.com --recv-keys ECA9D5AF2B98B3A0 \
