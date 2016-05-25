@@ -3,7 +3,7 @@ MAINTAINER Morgan Auchede <morgan.auchede@gmail.com>
 
 ENV \
     GOSU_VERSION=1.7 \
-    HOMEBANK_VERSION=5.0.6 \
+    HOMEBANK_VERSION=5.0.8 \
     NO_AT_BRIDGE=1
 
 RUN set -x \

@@ -25,4 +25,4 @@ docker run \
     --net host \
     --privileged \
     --rm \
-    ${IMAGE:-timonier/homebank}:${TAG:-5.0.6} /usr/bin/homebank "$@"
+    ${IMAGE:-timonier/homebank}:${TAG:-5.0.8} /usr/bin/homebank "$@"

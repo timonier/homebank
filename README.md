@@ -24,11 +24,11 @@ homebank
 # Start Homebank
 ```
 
-__Note__: By default, the version `5.0.6` will be used. To change the version, define the `TAG` before the command:
+__Note__: By default, the version `5.0.8` will be used. To change the version, define the `TAG` before the command:
 
 ```sh
 homebank --version
-# homebank 5.0.6
+# homebank 5.0.8
 
 TAG="5.0.5" homebank --version
 # homebank 5.0.5
