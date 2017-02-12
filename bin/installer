@@ -10,14 +10,22 @@ fail() {
 install() {
     docker run \
         -v /:/host \
-        --entrypoint=/bin/sh \
+        --entrypoint sh \
         --rm \
         ${IMAGE:-timonier/homebank}:${TAG:-5.0.8} -c "cp $1 /host/${2:-$1}"
 }
 
-[ $# -lt 1 ] && fail "Invalid number of arguments"
-[ $(id -u) != 0 ] && fail "Impossible to prepare the system without root privileges."
-[ $(uname) != Linux ] && fail "Impossible to prepare another operating system than Linux."
+if [ $# -lt 1 ] ; then
+    fail "Invalid number of arguments."
+fi
+
+if [ $(id -u) -ne 0 ] ; then
+    fail "Impossible to prepare the system without root privileges."
+fi
+
+if [ $(uname) != "Linux" ] ; then
+    fail "Impossible to prepare another operating system than Linux."
+fi
 
 case $1 in
     install )
@@ -25,14 +33,12 @@ case $1 in
         chmod +x /usr/local/bin/homebank
 
         install /usr/share/applications/homebank.desktop
-        install /usr/share/menu/homebank
         install /usr/share/icons/hicolor/48x48/apps/homebank.png /usr/share/pixmaps/homebank.png
     ;;
 
     uninstall )
         rm -f /usr/local/bin/homebank
         rm -f /usr/share/applications/homebank.desktop
-        rm -f /usr/share/menu/homebank
         rm -f /usr/share/pixmaps/homebank.png
     ;;
 

@@ -1,5 +1,7 @@
 # README
 
+Free personal finance software, money management
+
 ## Installation
 
 Copy the file `bin/homebank` into your executable folder (like `/usr/local/bin` or `$HOME/bin`):
@@ -27,11 +29,11 @@ homebank
 __Note__: By default, the version `5.0.8` will be used. To change the version, define the `TAG` before the command:
 
 ```sh
-homebank --version
-# homebank 5.0.8
+homebank
+# Start Homebank 5.0.8
 
-TAG="5.0.5" homebank --version
-# homebank 5.0.5
+TAG="5.0.8" homebank --version
+# Start Homebank 5.0.8
 ```
 
 ## Contributing
@@ -48,3 +50,4 @@ __Note__: Use the script `bin/build` to test your modifications locally.
 
 * [homebank](http://homebank.free.fr/)
 * [image "timonier/homebank"](https://hub.docker.com/r/timonier/homebank/)
+* [timonier/dumb-entrypoint](https://github.com/timonier/dumb-entrypoint)

@@ -1,8 +1,10 @@
 FROM ubuntu:16.04
-MAINTAINER Morgan Auchede <morgan.auchede@gmail.com>
+
+LABEL \
+    maintainer="Morgan Auchede <morgan.auchede@gmail.com>"
 
 ENV \
-    GOSU_VERSION=1.7 \
+    HOMEBANK_REVISION=39 \
     HOMEBANK_VERSION=5.0.8 \
     NO_AT_BRIDGE=1
 
@@ -16,38 +18,35 @@ RUN set -x \
 
     # Install packages
 
-    && BUILD_DEPS="build-essential curl libgtk-3-dev libofx-dev intltool" \
+    && BUILD_DEPS="build-essential bzr ca-certificates curl intltool libgtk-3-dev libofx-dev" \
 
     && apt-get install -y --no-install-recommends \
-           $BUILD_DEPS \
+           ${BUILD_DEPS} \
            libcanberra-gtk3-module \
            libofx6 \
            libosp5 \
            librsvg2-common \
            unity-gtk3-module \
 
-    # Install gosu
-
-    && curl -sLo /usr/sbin/gosu "https://github.com/tianon/gosu/releases/download/$GOSU_VERSION/gosu-amd64"  \
-    && chmod +x /usr/sbin/gosu \
-
     # Install homebank
 
-    && curl -sL "http://homebank.free.fr/public/homebank-$HOMEBANK_VERSION.tar.gz" | tar fxz - -C /tmp \
-    && sh -c "cd /tmp/homebank-$HOMEBANK_VERSION && ./configure --prefix=/usr" \
-    && make -C /tmp/homebank-$HOMEBANK_VERSION \
-    && make -C /tmp/homebank-$HOMEBANK_VERSION install \
+    && bzr branch lp:homebank/5.0.x /tmp/homebank --revision=${HOMEBANK_REVISION} \
+    && sh -c "cd /tmp/homebank && ./configure --prefix=/usr" \
+    && make -C /tmp/homebank \
+    && make -C /tmp/homebank install \
+
+    # Install timonier/dumb-entrypoint
+
+    && curl -sL "https://github.com/timonier/dumb-entrypoint/raw/master/bin/installer" | INSTALL_DIRECTORY="/usr/sbin" sh -s install \
 
     # Clean
 
     && apt-get remove -y --purge \
-           $BUILD_DEPS \
+           ${BUILD_DEPS} \
     && apt-get autoremove -y --purge \
 
     && rm -rf \
            /tmp/* \
            /var/lib/apt/lists/*
 
-COPY ./rootfs /
-
-ENTRYPOINT [ "/entrypoint.sh" ]
+ENTRYPOINT [ "dumb-init" , "--" , "dumb-entrypoint" ]

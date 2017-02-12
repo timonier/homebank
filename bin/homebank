@@ -1,28 +1,24 @@
 #!/bin/sh
 
-UID=$(/usr/bin/id -u)
-HOME=$(/usr/bin/getent passwd $UID | cut -d: -f6)
-PWD=$(/bin/pwd)
-
 docker run \
     $(env | cut -d= -f1 | awk '{print "-e", $1}') \
-    -i \
+    -i=$([ -t 0 ] && echo "true" || echo "false") \
     -t=$([ -t 0 ] && echo "true" || echo "false") \
     -v /etc/fonts:/etc/fonts:ro \
     -v /etc/group:/etc/group:ro \
-    -v /etc/passwd:/etc/passwd:ro \
     -v /etc/localtime:/etc/localtime:ro \
+    -v /etc/passwd:/etc/passwd:ro \
+    -v /etc/timezone:/etc/timezone:ro \
     -v /run:/run \
     -v /tmp:/tmp \
-    -v /usr/share/gvfs:/usr/share/gvfs:ro \
-    -v /usr/share/icons:/usr/share/icons:ro \
     -v /usr/share/fonts:/usr/share/fonts:ro \
+    -v /usr/share/icons:/usr/share/icons:ro \
     -v /usr/share/themes:/usr/share/themes:ro \
     -v /var/lib/dbus:/var/lib/dbus:ro \
-    -v "$HOME:$HOME" \
-    -v "$PWD:$PWD" \
-    -w "$PWD" \
+    -v "${HOME}:${HOME}" \
+    -v "${PWD}:${PWD}" \
+    -w "${PWD}" \
     --net host \
     --privileged \
     --rm \
-    ${IMAGE:-timonier/homebank}:${TAG:-5.0.8} /usr/bin/homebank "$@"
+    ${IMAGE:-timonier/homebank}:${TAG:-5.0.8} homebank "$@"
