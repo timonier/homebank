@@ -4,17 +4,17 @@ Free personal finance software, money management
 
 ## Installation
 
-Copy the file `bin/homebank` into your executable folder (like `/usr/local/bin` or `$HOME/bin`):
+Copy `bin/homebank` into your executable folder (like `/usr/local/bin` or `$HOME/bin`):
 
 ```sh
-sudo curl -sLo /usr/local/bin/homebank "https://github.com/timonier/homebank/raw/master/bin/homebank"
+sudo curl --location --output /usr/local/bin/homebank "https://github.com/timonier/homebank/raw/master/bin/homebank"
 sudo chmod +x /usr/local/bin/homebank
 ```
 
 Linux users can use the [installer](https://github.com/timonier/homebank/blob/master/bin/installer):
 
 ```sh
-curl -sL "https://github.com/timonier/homebank/raw/master/bin/installer" | sudo sh -s install
+curl --location "https://github.com/timonier/homebank/raw/master/bin/installer" | sudo sh -s install
 ```
 
 ## Usage
@@ -24,16 +24,6 @@ Run the command `homebank`:
 ```sh
 homebank
 # Start Homebank
-```
-
-__Note__: By default, the version `5.0.8` will be used. To change the version, define the `TAG` before the command:
-
-```sh
-homebank
-# Start Homebank 5.0.8
-
-TAG="5.0.8" homebank --version
-# Start Homebank 5.0.8
 ```
 
 ## Contributing
@@ -51,3 +41,4 @@ __Note__: Use the script `bin/build` to test your modifications locally.
 * [homebank](http://homebank.free.fr/)
 * [image "timonier/homebank"](https://hub.docker.com/r/timonier/homebank/)
 * [timonier/dumb-entrypoint](https://github.com/timonier/dumb-entrypoint)
+* [timonier/version-lister](https://github.com/timonier/version-lister)

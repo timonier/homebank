@@ -1,14 +1,13 @@
-FROM ubuntu:16.04
+FROM ubuntu:latest
 
 LABEL \
     maintainer="Morgan Auchede <morgan.auchede@gmail.com>"
 
 ENV \
-    HOMEBANK_REVISION=39 \
-    HOMEBANK_VERSION=5.0.8 \
+    HOMEBANK_VERSION=latest \
     NO_AT_BRIDGE=1
 
-RUN set -x \
+RUN set -eux \
 
     # Prepare system
 
@@ -18,34 +17,38 @@ RUN set -x \
 
     # Install packages
 
-    && BUILD_DEPS="build-essential bzr ca-certificates curl intltool libgtk-3-dev libofx-dev" \
+    && export BUILD_DEPS="build-essential bzr ca-certificates curl intltool libgtk-3-dev libofx-dev" \
 
-    && apt-get install -y --no-install-recommends \
+    && apt-get install --no-install-recommends --yes \
            ${BUILD_DEPS} \
            libcanberra-gtk3-module \
            libofx6 \
            libosp5 \
+           libsoup2.4 \
            librsvg2-common \
+           locales \
            unity-gtk3-module \
+
+    # Install dumb-entrypoint
+
+    && curl --location "https://github.com/timonier/dumb-entrypoint/raw/master/bin/installer" | INSTALL_DIRECTORY="/usr/sbin" sh -s install \
 
     # Install homebank
 
-    && bzr branch lp:homebank/5.0.x /tmp/homebank --revision=${HOMEBANK_REVISION} \
+    && export $(curl "https://raw.githubusercontent.com/timonier/version-lister/release/generated/homebank/${HOMEBANK_VERSION}" | xargs) \
+
+    && bzr branch "lp:homebank/${HOMEBANK_BRANCH}" /tmp/homebank --revision "${HOMEBANK_REVISION}" \
     && sh -c "cd /tmp/homebank && ./configure --prefix=/usr" \
-    && make -C /tmp/homebank \
-    && make -C /tmp/homebank install \
-
-    # Install timonier/dumb-entrypoint
-
-    && curl -sL "https://github.com/timonier/dumb-entrypoint/raw/master/bin/installer" | INSTALL_DIRECTORY="/usr/sbin" sh -s install \
+    && make --directory /tmp/homebank \
+    && make --directory /tmp/homebank install \
 
     # Clean
 
-    && apt-get remove -y --purge \
+    && apt-get remove --purge --yes \
            ${BUILD_DEPS} \
-    && apt-get autoremove -y --purge \
+    && apt-get autoremove --purge --yes \
 
-    && rm -rf \
+    && rm --force --recursive \
            /tmp/* \
            /var/lib/apt/lists/*
 

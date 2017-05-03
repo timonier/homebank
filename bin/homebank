@@ -1,24 +1,24 @@
 #!/bin/sh
 
 docker run \
-    $(env | cut -d= -f1 | awk '{print "-e", $1}') \
-    -i=$([ -t 0 ] && echo "true" || echo "false") \
-    -t=$([ -t 0 ] && echo "true" || echo "false") \
-    -v /etc/fonts:/etc/fonts:ro \
-    -v /etc/group:/etc/group:ro \
-    -v /etc/localtime:/etc/localtime:ro \
-    -v /etc/passwd:/etc/passwd:ro \
-    -v /etc/timezone:/etc/timezone:ro \
-    -v /run:/run \
-    -v /tmp:/tmp \
-    -v /usr/share/fonts:/usr/share/fonts:ro \
-    -v /usr/share/icons:/usr/share/icons:ro \
-    -v /usr/share/themes:/usr/share/themes:ro \
-    -v /var/lib/dbus:/var/lib/dbus:ro \
-    -v "${HOME}:${HOME}" \
-    -v "${PWD}:${PWD}" \
-    -w "${PWD}" \
+    $(env | cut -d= -f1 | awk '{print "--env", $1}') \
+    --interactive="$([ -t 0 ] && echo "true" || echo "false")" \
     --net host \
     --privileged \
     --rm \
-    ${IMAGE:-timonier/homebank}:${TAG:-5.0.8} homebank "$@"
+    --tty="$([ -t 0 ] && echo "true" || echo "false")" \
+    --volume /etc/fonts:/etc/fonts:ro \
+    --volume /etc/group:/etc/group:ro \
+    --volume /etc/localtime:/etc/localtime:ro \
+    --volume /etc/passwd:/etc/passwd:ro \
+    --volume /etc/timezone:/etc/timezone:ro \
+    --volume /run:/run \
+    --volume /tmp:/tmp \
+    --volume /usr/share/fonts:/usr/share/fonts:ro \
+    --volume /usr/share/icons:/usr/share/icons:ro \
+    --volume /usr/share/themes:/usr/share/themes:ro \
+    --volume /var/lib/dbus:/var/lib/dbus:ro \
+    --volume "${HOME}:${HOME}" \
+    --volume "${PWD}:${PWD}" \
+    --workdir "${PWD}" \
+    "${IMAGE:-timonier/homebank}:${TAG:-latest}" homebank "$@"

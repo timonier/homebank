@@ -1,35 +1,39 @@
 #!/bin/sh
-set -x
+set -eux
+
+# Check environment
 
 fail() {
-    echo $1 1>&2
-    echo "Usage: $0 [install|uninstall]" 1>&2
+    echo "$1" 1>&2
+    echo "Usage: $(basename "$0") [install|uninstall]" 1>&2
     exit 1
 }
 
-install() {
-    docker run \
-        -v /:/host \
-        --entrypoint sh \
-        --rm \
-        ${IMAGE:-timonier/homebank}:${TAG:-5.0.8} -c "cp $1 /host/${2:-$1}"
-}
-
-if [ $# -lt 1 ] ; then
+if [ "$#" -lt 1 ] ; then
     fail "Invalid number of arguments."
 fi
 
-if [ $(id -u) -ne 0 ] ; then
+if [ "$(id --user)" -ne 0 ] ; then
     fail "Impossible to prepare the system without root privileges."
 fi
 
-if [ $(uname) != "Linux" ] ; then
+if [ "$(uname)" != "Linux" ] ; then
     fail "Impossible to prepare another operating system than Linux."
 fi
 
-case $1 in
+# Run installer
+
+install() {
+    docker run \
+        --entrypoint sh \
+        --rm \
+        --volume /:/host \
+        "${IMAGE:-timonier/homebank}:${TAG:-latest}" -c "cp '$1' '/host/${2:-$1}'"
+}
+
+case "$1" in
     install )
-        curl -sLo /usr/local/bin/homebank "https://github.com/timonier/homebank/raw/master/bin/homebank"
+        curl --location --output /usr/local/bin/homebank "https://github.com/timonier/homebank/raw/master/bin/homebank"
         chmod +x /usr/local/bin/homebank
 
         install /usr/share/applications/homebank.desktop
@@ -37,11 +41,11 @@ case $1 in
     ;;
 
     uninstall )
-        rm -f /usr/local/bin/homebank
-        rm -f /usr/share/applications/homebank.desktop
-        rm -f /usr/share/pixmaps/homebank.png
+        rm --force /usr/local/bin/homebank
+        rm --force /usr/share/applications/homebank.desktop
+        rm --force /usr/share/pixmaps/homebank.png
     ;;
 
     * )
-        fail "Argument $1 is invalid."
+        fail "Argument \"$1\" is invalid."
 esac
