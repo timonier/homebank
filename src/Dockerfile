@@ -7,7 +7,7 @@ ENV \
     HOMEBANK_VERSION=latest \
     NO_AT_BRIDGE=1
 
-RUN set -eux \
+RUN set -ex \
 
     # Prepare system
 
@@ -29,10 +29,6 @@ RUN set -eux \
            locales \
            unity-gtk3-module \
 
-    # Install dumb-entrypoint
-
-    && curl --location "https://github.com/timonier/dumb-entrypoint/raw/master/bin/installer" | INSTALL_DIRECTORY="/usr/sbin" sh -s install \
-
     # Install homebank
 
     && export $(curl "https://raw.githubusercontent.com/timonier/version-lister/release/generated/homebank/${HOMEBANK_VERSION}" | xargs) \
@@ -41,6 +37,12 @@ RUN set -eux \
     && sh -c "cd /tmp/homebank && ./configure --prefix=/usr" \
     && make --directory /tmp/homebank \
     && make --directory /tmp/homebank install \
+
+    # Install timonier/dumb-entrypoint
+
+    && curl --location "https://github.com/timonier/dumb-entrypoint/raw/master/src/dumb-entrypoint/installer" | INSTALL_DIRECTORY="/usr/sbin" sh -s -- install \
+    && curl --location "https://github.com/timonier/dumb-entrypoint/raw/master/src/dumb-init/installer" | INSTALL_DIRECTORY="/usr/sbin" sh -s -- install \
+    && curl --location "https://github.com/timonier/dumb-entrypoint/raw/master/src/gosu/installer" | INSTALL_DIRECTORY="/usr/sbin" sh -s -- install \
 
     # Clean
 
