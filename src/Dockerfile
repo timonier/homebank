@@ -16,9 +16,10 @@ RUN set -ex \
 \
     # Install packages
 \
-    && export BUILD_DEPS="build-essential bzr ca-certificates curl intltool libgtk-3-dev libofx-dev" \
+    && export BUILD_DEPS="build-essential bzr curl intltool libgtk-3-dev libofx-dev" \
     && apt-get install --no-install-recommends --yes \
            ${BUILD_DEPS} \
+           ca-certificates \
            libcanberra-gtk3-module \
            libofx6 \
            libosp5 \

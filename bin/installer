@@ -33,7 +33,7 @@ install() {
 
 case "$1" in
     install )
-        curl --location --output /usr/local/bin/homebank "https://github.com/timonier/homebank/raw/master/bin/homebank"
+        curl --location --output /usr/local/bin/homebank "https://github.com/timonier/homebank/raw/master/bin/cmd"
         chmod +x /usr/local/bin/homebank
 
         install /usr/share/applications/homebank.desktop

@@ -4,13 +4,6 @@ Free personal finance software, money management
 
 ## Installation
 
-Copy `bin/homebank` into your executable folder (like `/usr/local/bin` or `$HOME/bin`):
-
-```sh
-sudo curl --location --output /usr/local/bin/homebank "https://github.com/timonier/homebank/raw/master/bin/homebank"
-sudo chmod +x /usr/local/bin/homebank
-```
-
 Linux users can use the [installer](https://github.com/timonier/homebank/blob/master/bin/installer):
 
 ```sh

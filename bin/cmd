@@ -28,4 +28,4 @@ docker run \
     --volume "${HOME}:${HOME}" \
     --volume "${PWD}:${PWD}" \
     --workdir "${PWD}" \
-    "${IMAGE:-timonier/homebank}:${TAG:-latest}" homebank "$@"
+    "${IMAGE:-timonier/homebank}:${TAG:-latest}" "$(basename "$0")" "$@"
