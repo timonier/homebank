@@ -21,7 +21,7 @@ RUN set -ex \
            ${BUILD_DEPS} \
            ca-certificates \
            libcanberra-gtk3-module \
-           libofx6 \
+           libofx7 \
            libosp5 \
            libsoup2.4 \
            librsvg2-common \
