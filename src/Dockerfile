@@ -1,7 +1,7 @@
 FROM ubuntu:latest
 
 LABEL \
-    maintainer="Morgan Auchede <morgan.auchede@gmail.com>"
+    maintainer="Morgan AUCHEDE <morgan.auchede@gmail.com>"
 
 ENV \
     HOMEBANK_VERSION=latest \
